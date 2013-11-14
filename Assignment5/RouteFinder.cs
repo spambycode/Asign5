@@ -6,13 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assignment5
 {
-    class Program
+    class RouteFinder
     {
-        static void Main(string[] args)
-        {
-            MapData MD = new MapData();
-
-            MD.LoadMapData();
-        }
     }
 }
