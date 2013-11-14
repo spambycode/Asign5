@@ -22,7 +22,7 @@ namespace Assignment5
     class MapData
     {
         private short N;               //Number of nodes in map memory
-        private short MaxN;
+        private const short MaxN = 100;
         private int[,] _roadDistance;  //2d Array of the map matrix
         private string[] _cityNameList; //LP name list associated with subscript x
         private string[] _upCityList;   //UP name list associated with subscript x.
@@ -31,7 +31,6 @@ namespace Assignment5
 
         public MapData()
         {
-            MaxN = 30;
             _roadDistance = new int[MaxN, MaxN];
             _mapDataReader = new StreamReader("MichiganRoads.txt");
              
@@ -73,7 +72,6 @@ namespace Assignment5
                     {
                         StoreCityName(lineSplit[i], true);
                     }
-                    N++;
                 }
                 else if (lineSplit[0].ToUpper().Contains("DIST"))
                 {
@@ -115,20 +113,19 @@ namespace Assignment5
 
         //-------------------------------------------------------------
         /// <summary>
-        /// Gets the city number of the UP cities of Michigan, 
-        /// if not found LP is searched.
+        /// Gets the location of where the city is located
         /// </summary>
         /// <param name="cityName">Name of city</param>
-        /// <returns>Name of city</returns>
-        public int GetCityPeninsula(string  cityName)
+        /// <returns>True if the city is in the UP</returns>
+        public bool GetCityPeninsula(string  cityName)
         {
             for (int i = 0; i < _upCityList.Length; i++ )
             {
                 if (_upCityList[i].ToUpper().CompareTo(cityName.ToUpper()) == 0)
-                    return i;
+                    return true;
 
             }
-            return GetCityNumber(cityName);
+            return false;
         }
 
         //-------------------------------------------------------------------
