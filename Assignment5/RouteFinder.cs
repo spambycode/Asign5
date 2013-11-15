@@ -23,16 +23,20 @@ namespace Assignment5
             _path = new int[N];
         }
 
-        //--------------------------------------------------
-
+        //-------------------------------------------------------------------------------
+        /// <summary>
+        /// Finds the shortest route from two points stored in the graph
+        /// </summary>
+        /// <param name="Start">Starting location</param>
+        /// <param name="End">Ending location</param>
         public void FindShortestRoute(int Start, int End)
         {
             InitializeArrays(Start);
             SearchForPath(End);
-            ReportAnswers();
+            ReportAnswers(End);
         }
 
-        //---------------------------------------------------
+        //-------------------------------------------------------------------------------
         /// <summary>
         /// Initialize the arrays
         /// </summary>
@@ -53,7 +57,7 @@ namespace Assignment5
             _included[Start] = true;
         }
 
-        //--------------------------------------------------------------
+        //-------------------------------------------------------------------------------
         /// <summary>
         /// Search for the shortest path with the given graph variables
         /// </summary>
@@ -66,17 +70,21 @@ namespace Assignment5
 
             while (_included[End] == false)
             {
-                targetSub = GetShortestDistance();
+                //Get the shortest distance that hasn't been 'Included'
+                targetSub = GetShortestDistance(End);
                 _included[targetSub] = true;
 
-                for(int i =0; i < N-1; i++) //****Consider N-1
+                //Loop through all structures and find shortest distances from that point
+                for(int i =0; i < N; i++)
                 {
                     if(_included[i] == false)
                     {
                         targetToDestDistance = _MD.GetRoadDistance(targetSub, i);
 
+                        //Ignore zero(Self implied) and Infinity(No connection between vertex's)
                         if (targetToDestDistance != 0 && targetToDestDistance != int.MaxValue)
                        {
+                            //Check if any of the combined points are less than what has been stored before
                            distanceCompare = _distance[targetSub] + targetToDestDistance;
                            if (distanceCompare < _distance[i])
                            {
@@ -89,28 +97,43 @@ namespace Assignment5
             }
         }
 
-        //----------------------------------------------------------
+        //-------------------------------------------------------------------------------
         /// <summary>
         /// Reports the shortest path between the two destinations
         /// </summary>
-        private void ReportAnswers()
+        private void ReportAnswers(int End)
         {
-            string cityName;
-
-            foreach(int n in _path)
-            {
-                if (n != -1)
-                    Console.WriteLine(n);
-            }
+            string Path = TraversePath(End).TrimEnd(new char[]{' ', '>'});
+            Console.WriteLine("{0}", Path);
+            Console.WriteLine("Total Distance:{0}", _distance[End]);
         }
 
-        //-------------------------------------------------------------
+        //-------------------------------------------------------------------------------
+        /// <summary>
+        /// Traverses the path index by using recursion to get paths in the correct order
+        /// </summary>
+        /// <param name="index">Starting index point</param>
+        /// <returns>Path from point A to point B</returns>
+        private string TraversePath(int index)
+        {
+            string path;
+
+            if(_path[index] == -1)
+            {
+                return string.Format("{0} ({1}) > ", _MD.GetCityName(index), index);
+            }
+            
+            path = TraversePath(_path[index]);
+            return path += string.Format("{0} ({1}) > ", _MD.GetCityName(index), index);
+        }
+
+        //-------------------------------------------------------------------------------
         /// <summary>
         /// Returns the shortest path stored. That is not yet 'included'
         /// </summary>
         /// <returns>Subscript of shortest distance</returns>
 
-        private int GetShortestDistance()
+        private int GetShortestDistance(int End)
         {
             int lowestValue = _distance[0];
             int lowestSubScript = -1;
@@ -126,6 +149,9 @@ namespace Assignment5
                 }
 
             }
+
+            if (lowestSubScript == -1)
+                lowestSubScript = End;
 
             return lowestSubScript;
         }

@@ -14,8 +14,8 @@ namespace Assignment5
             MD.LoadMapData();
 
             RouteFinder RF = new RouteFinder(MD);
-            int CityA = MD.GetCityNumber("kalamazoo");
-            int CityB = MD.GetCityNumber("lansing");
+            int CityA = MD.GetCityNumber(MD.GetCityName(7));
+            int CityB = MD.GetCityNumber(MD.GetCityName(4));
 
             RF.FindShortestRoute(CityA, CityB);
 
