@@ -11,8 +11,15 @@ namespace Assignment5
         static void Main(string[] args)
         {
             MapData MD = new MapData();
-
             MD.LoadMapData();
+
+            RouteFinder RF = new RouteFinder(MD);
+            int CityA = MD.GetCityNumber("kalamazoo");
+            int CityB = MD.GetCityNumber("lansing");
+
+            RF.FindShortestRoute(CityA, CityB);
+
+
         }
     }
 }

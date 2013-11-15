@@ -21,7 +21,7 @@ namespace Assignment5
 {
     class MapData
     {
-        private short N;               //Number of nodes in map memory
+        private int N;               //Number of nodes in map memory
         private const short MaxN = 100;
         private int[,] _roadDistance;  //2d Array of the map matrix
         private string[] _cityNameList; //LP name list associated with subscript x
@@ -32,6 +32,8 @@ namespace Assignment5
         public MapData()
         {
             _roadDistance = new int[MaxN, MaxN];
+            _cityNameList = new string[1];
+            _upCityList = new string[1];
             _mapDataReader = new StreamReader("MichiganRoads.txt");
              
             for(int i = 0; i < MaxN; i++)
@@ -65,20 +67,25 @@ namespace Assignment5
                 var lineSplit = lineRead.Split(new char[]{' ', ',', '\n','\r'}, 
                                 StringSplitOptions.RemoveEmptyEntries);
 
+                if (lineSplit.Length <= 2)
+                    continue;
+
                 if(lineSplit[0].ToUpper().Contains("UP"))
                 {
                     //lineS[0] = "UP**" and lineS[Len-1] = Bad Data
                     for(int i = 1; i < lineSplit.Length-1; i++)
                     {
-                        StoreCityName(lineSplit[i], true);
+                        StoreCityName(lineSplit[i], ref _upCityList);
                     }
                 }
                 else if (lineSplit[0].ToUpper().Contains("DIST"))
                 {
                     lineSplit[0] = lineSplit[0].Replace("dist(", "");
-                    StoreCityName(lineSplit[0], false);
-                    StoreCityName(lineSplit[1], false);
+                    StoreCityName(lineSplit[0], ref _cityNameList);
+                    StoreCityName(lineSplit[1], ref _cityNameList);
                     distance = Convert.ToInt32(lineSplit[2].Replace(").", ""));
+
+                    N = _cityNameList.Length - 1;
 
                     cityANum = GetCityNumber(lineSplit[0]);
                     cityBNum = GetCityNumber(lineSplit[1]);
@@ -87,7 +94,6 @@ namespace Assignment5
                     {
                         _roadDistance[cityANum, cityBNum] = distance;
                         _roadDistance[cityBNum, cityANum] = distance;
-                        N++;
                     }
 
                 }
@@ -151,38 +157,42 @@ namespace Assignment5
             return _roadDistance[Start,Dest];
         }
 
+        public int GetNumberOfNodes()
+        {
+            return N;
+        }
+
         //------------------------Private--------------------------------------
         /// <summary>
         /// Stores the cities name in the array
         /// </summary>
         /// <param name="name">Name of city</param>
-        private void StoreCityName(string name, bool inUP)
+        private void StoreCityName(string name, ref string[] cityArray)
         {
-            var cityName = (inUP ? _upCityList : _cityNameList);
             bool NameFound = false;
 
-            foreach(string n in cityName)
+            if (cityArray != null)
             {
-                if(n.ToUpper().CompareTo(name.ToUpper()) == 0)
+                foreach (string n in cityArray)
                 {
-                    NameFound = true;
-                    break;
+                    if (n != null)
+                    {
+                        if (n.ToUpper().CompareTo(name.ToUpper()) == 0)
+                        {
+                            NameFound = true;
+                            break;
+                        }
+                    }
                 }
             }
 
-            if(NameFound == false)
+            if (NameFound == false)
             {
-                if(inUP == true)
-                {
-                    Array.Resize(ref _upCityList, _upCityList.Length + 1);
-                    _upCityList[_upCityList.Length] = name;
-                }
-                else
-                {
-                    Array.Resize(ref _cityNameList, _cityNameList.Length + 1);
-                    _cityNameList[_cityNameList.Length] = name;
-                }
+
+                Array.Resize(ref cityArray, cityArray.Length+1);
+                cityArray[cityArray.Length - 2] = name;
             }
+
 
         }
 
