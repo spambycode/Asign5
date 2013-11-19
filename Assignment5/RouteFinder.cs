@@ -6,7 +6,7 @@
  *                      
  * Description:Takes the mapdata class and uses its values to devise 
  *             the shortest path between two given cities based on 
- *             their weign between edges.
+ *             their weigh between edges.
  * 
  */
 

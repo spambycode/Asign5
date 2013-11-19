@@ -9,7 +9,7 @@
  *  
  * Description: To build a graph program that handles all cities 
  *              within the area. And devise paths from two given 
- *              michigan cities that are the shortest in length and weight.
+ *              Michigan cities that are the shortest in length and weight.
  */
 
 using System;
@@ -48,12 +48,12 @@ namespace Assignment5
         {
             string lineReader;
             string logSpacer = "%".PadRight(80, '%');
-            int StartNumber = -1;
-            int EndNumber   = -1;
-            string StartName;
-            string EndName;
-            bool StartIsUP = false;
-            bool EndIsUP = false;
+            int StartNumber  = -1;
+            int EndNumber    = -1;
+            string StartName = string.Empty;
+            string EndName   = string.Empty;
+            bool StartIsUP   = false;
+            bool EndIsUP     = false;
 
             while (cityReader.EndOfStream != true)
             {
