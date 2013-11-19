@@ -1,4 +1,18 @@
-﻿using System;
+﻿/*Author: George Karaszi
+ * Date:11-18-13
+ * 
+ * Files Accessed: (in) cityPairs.txt
+ *                      -Holds pairs of cities that need paths 
+ *                       to be build from
+ *                 (out) logFile.txt
+ *                       -Program output
+ *  
+ * Description: To build a graph program that handles all cities 
+ *              within the area. And devise paths from two given 
+ *              michigan cities that are the shortest in length and weight.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +41,9 @@ namespace Assignment5
         }
 
         //-----------------------------------------------------------------------------------
-
+        /// <summary>
+        /// Reads each line in the city pair file and starts to preform corrective actions
+        /// </summary>
         static void ReadEventFile()
         {
             string lineReader;

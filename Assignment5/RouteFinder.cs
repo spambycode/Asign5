@@ -1,4 +1,17 @@
-﻿using System;
+﻿/*Author:George Karaszi
+ * Date:11-18-13
+ * 
+ * Files Accessed (out) logFile.txt
+ *                      -Handles output
+ *                      
+ * Description:Takes the mapdata class and uses its values to devise 
+ *             the shortest path between two given cities based on 
+ *             their weign between edges.
+ * 
+ */
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
