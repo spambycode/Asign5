@@ -45,9 +45,11 @@ namespace Assignment5
                 var MapDataSplit = lineReader.Split(',');
 
                 StartName   = MapDataSplit[0];
+                StartNumber = MD.GetCityNumber(StartName);
                 StartIsUP   = MD.GetCityPeninsula(StartName);
 
                 EndName     = MapDataSplit[1];
+                EndNumber   = MD.GetCityNumber(EndName);
                 EndIsUP     = MD.GetCityPeninsula(EndName);
 
                 logFile.WriteLine(logSpacer);
@@ -55,17 +57,16 @@ namespace Assignment5
 
                 if(CitiesExist(StartName, EndName) == true)
                 {
-                    if(StartIsUP == true && EndIsUP == false)
+                    if ((StartIsUP == true && EndIsUP == false) || 
+                        (StartIsUP == false && EndIsUP == true))
                     {
-
-                    }
-                    else if (StartIsUP == false && EndIsUP == true)
-                    {
-
+                        logFile.WriteLine("[***** 2 different peninsulas, so 2 partial routes *****]");
+                        RF.FindShortestRoute(StartNumber, MD.GetCityNumber("theBridge"));
+                        RF.FindShortestRoute(MD.GetCityNumber("theBridge"), EndNumber);
                     }
                     else
                     {
-
+                        RF.FindShortestRoute(StartNumber, EndNumber);
                     }
                 }
 

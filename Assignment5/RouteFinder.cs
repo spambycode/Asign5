@@ -26,17 +26,6 @@ namespace Assignment5
             
         }
 
-        //-------------------------------------------------------------------------------
-        /// <summary>
-        /// Finds the shortest route from two points stored in the graph
-        /// </summary>
-        /// <param name="Start">Starting location</param>
-        /// <param name="End">Ending location</param>
-        public void FindShortestRoute(string Start, string End)
-        {
-            FindShortestRoute(_MD.GetCityNumber(Start), _MD.GetCityNumber(End));
-        }
-
 
         //-------------------------------------------------------------------------------
         /// <summary>
@@ -44,7 +33,7 @@ namespace Assignment5
         /// </summary>
         /// <param name="Start">Starting location</param>
         /// <param name="End">Ending location</param>
-        private void FindShortestRoute(int Start, int End)
+        public void FindShortestRoute(int Start, int End)
         {
             InitializeArrays(Start);
             SearchForPath(End);
@@ -118,9 +107,9 @@ namespace Assignment5
         /// </summary>
         private void ReportAnswers(int End)
         {
-            string Path = TraversePath(End);
-            Console.WriteLine("{0}", Path);
-            Console.WriteLine("Total Distance:{0}", _distance[End]);
+            _logFile.WriteLine("Total Distance:  {0} miles", _distance[End]);
+            _logFile.WriteLine("Shortest Route:  {0}", TraversePath(End));
+            
         }
 
         //-------------------------------------------------------------------------------
