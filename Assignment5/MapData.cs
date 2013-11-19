@@ -27,15 +27,17 @@ namespace Assignment5
         private string[] _cityNameList; //LP name list associated with subscript x
         private string[] _upCityList;   //UP name list associated with subscript x.
         private StreamReader _mapDataReader; //File for reading in the map information
+        private StreamWriter _logFile;
 
 
-        public MapData()
+        public MapData(StreamWriter logFile)
         {
             _roadDistance = new int[MaxN, MaxN];
             _cityNameList = new string[1];
             _upCityList = new string[1];
             _mapDataReader = new StreamReader("MichiganRoads.txt");
-             
+            _logFile = logFile;
+
             for(int i = 0; i < MaxN; i++)
             {
                 for(int j = 0; j < MaxN; j++)

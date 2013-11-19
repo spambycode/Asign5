@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.IO;
 namespace Assignment5
 {
     class RouteFinder
@@ -13,14 +13,17 @@ namespace Assignment5
         private int[] _path;
         private int N;
         private MapData _MD;
+        private StreamWriter _logFile;
 
-        public RouteFinder(MapData MD)
+        public RouteFinder(MapData MD, StreamWriter logFile)
         {
+            _logFile = logFile;
             _MD = MD;
             N   = MD.GetNumberOfNodes();
             _included = new bool[N];
             _distance = new int[N];
             _path = new int[N];
+            
         }
 
         //-------------------------------------------------------------------------------
@@ -29,7 +32,19 @@ namespace Assignment5
         /// </summary>
         /// <param name="Start">Starting location</param>
         /// <param name="End">Ending location</param>
-        public void FindShortestRoute(int Start, int End)
+        public void FindShortestRoute(string Start, string End)
+        {
+            FindShortestRoute(_MD.GetCityNumber(Start), _MD.GetCityNumber(End));
+        }
+
+
+        //-------------------------------------------------------------------------------
+        /// <summary>
+        /// Finds the shortest route from two points stored in the graph
+        /// </summary>
+        /// <param name="Start">Starting location</param>
+        /// <param name="End">Ending location</param>
+        private void FindShortestRoute(int Start, int End)
         {
             InitializeArrays(Start);
             SearchForPath(End);
@@ -103,7 +118,7 @@ namespace Assignment5
         /// </summary>
         private void ReportAnswers(int End)
         {
-            string Path = TraversePath(End).TrimEnd(new char[]{' ', '>'});
+            string Path = TraversePath(End);
             Console.WriteLine("{0}", Path);
             Console.WriteLine("Total Distance:{0}", _distance[End]);
         }
@@ -120,11 +135,11 @@ namespace Assignment5
 
             if(_path[index] == -1)
             {
-                return string.Format("{0} ({1}) > ", _MD.GetCityName(index), index);
+                return string.Format("{0} ({1})", _MD.GetCityName(index), index);
             }
             
             path = TraversePath(_path[index]);
-            return path += string.Format("{0} ({1}) > ", _MD.GetCityName(index), index);
+            return path += string.Format(" > {0} ({1})", _MD.GetCityName(index), index);
         }
 
         //-------------------------------------------------------------------------------
