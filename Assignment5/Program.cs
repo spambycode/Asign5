@@ -15,7 +15,7 @@ namespace Assignment5
         static RouteFinder RF;
         static void Main(string[] args)
         {
-            cityReader = new StreamReader("CityPairs.txt");
+            cityReader = new StreamReader("cityPairs.txt");
             logFile = new StreamWriter("LogFile.txt");
             MD = new MapData(logFile);
             MD.LoadMapData();
@@ -31,7 +31,7 @@ namespace Assignment5
         static void ReadEventFile()
         {
             string lineReader;
-            string logSpacer = "%".PadRight(30, '%');
+            string logSpacer = "%".PadRight(80, '%');
             int StartNumber = -1;
             int EndNumber   = -1;
             string StartName;
@@ -61,7 +61,10 @@ namespace Assignment5
                         (StartIsUP == false && EndIsUP == true))
                     {
                         logFile.WriteLine("[***** 2 different peninsulas, so 2 partial routes *****]");
+                        logFile.WriteLine();
+
                         RF.FindShortestRoute(StartNumber, MD.GetCityNumber("theBridge"));
+                        logFile.WriteLine();
                         RF.FindShortestRoute(MD.GetCityNumber("theBridge"), EndNumber);
                     }
                     else
@@ -69,11 +72,11 @@ namespace Assignment5
                         RF.FindShortestRoute(StartNumber, EndNumber);
                     }
                 }
-
-                logFile.WriteLine(logSpacer);
-                logFile.WriteLine();
               
             }
+
+            logFile.WriteLine(logSpacer);
+            logFile.Close();
         }
 
 

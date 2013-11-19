@@ -127,7 +127,7 @@ namespace Assignment5
         /// <returns>True if the city is in the UP</returns>
         public bool GetCityPeninsula(string  cityName)
         {
-            for (int i = 0; i < _upCityList.Length; i++ )
+            for (int i = 0; i < _upCityList.Length-1; i++ )
             {
                 if (_upCityList[i].ToUpper().CompareTo(cityName.ToUpper()) == 0)
                     return true;

@@ -14,6 +14,7 @@ namespace Assignment5
         private int N;
         private MapData _MD;
         private StreamWriter _logFile;
+        private string TraceOfRoutes;
 
         public RouteFinder(MapData MD, StreamWriter logFile)
         {
@@ -53,12 +54,16 @@ namespace Assignment5
                 _distance[i] = _MD.GetRoadDistance(Start, i);
 
                 if (_distance[i] != int.MaxValue && _distance[i] != 0)
+                {
                     _path[i] = Start;
+                }
                 else
                     _path[i] = -1;
 
             }
             _included[Start] = true;
+
+            TraceOfRoutes = _MD.GetCityName(Start);
         }
 
         //-------------------------------------------------------------------------------
@@ -76,7 +81,9 @@ namespace Assignment5
             {
                 //Get the shortest distance that hasn't been 'Included'
                 targetSub = GetShortestDistance(End);
+                TraceOfRoutes += " " + _MD.GetCityName(targetSub);
                 _included[targetSub] = true;
+                
 
                 //Loop through all structures and find shortest distances from that point
                 for(int i =0; i < N; i++)
@@ -107,6 +114,9 @@ namespace Assignment5
         /// </summary>
         private void ReportAnswers(int End)
         {
+            _logFile.WriteLine();
+            _logFile.WriteLine("TRACE OF TARGETS:  {0}", TraceOfRoutes);
+            _logFile.WriteLine();
             _logFile.WriteLine("Total Distance:  {0} miles", _distance[End]);
             _logFile.WriteLine("Shortest Route:  {0}", TraversePath(End));
             
@@ -124,11 +134,11 @@ namespace Assignment5
 
             if(_path[index] == -1)
             {
-                return string.Format("{0} ({1})", _MD.GetCityName(index), index);
+                return string.Format("{0}", _MD.GetCityName(index));
             }
             
             path = TraversePath(_path[index]);
-            return path += string.Format(" > {0} ({1})", _MD.GetCityName(index), index);
+            return path += string.Format(" > {0}", _MD.GetCityName(index));
         }
 
         //-------------------------------------------------------------------------------
@@ -139,13 +149,13 @@ namespace Assignment5
 
         private int GetShortestDistance(int End)
         {
-            int lowestValue = _distance[0];
+            int lowestValue = int.MaxValue;
             int lowestSubScript = -1;
             for(int i = 0; i < N; i++)
             {
                 if (_included[i] == false)
                 {
-                    if (_distance[i] <= lowestValue)
+                    if (_distance[i] < lowestValue)
                     {
                         lowestValue = _distance[i];
                         lowestSubScript = i;
